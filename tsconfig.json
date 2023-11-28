@@ -17,6 +17,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "context/userStore.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "context/userStore.tsx", "utils/dbConnect.js", "utils/models/userSchema.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,0 +1,19 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  // previewFeatures = ["mongoDb"]
+}
+
+model User {
+  id         String   @id @map("_id")
+  email      String
+  username   String
+  isloggedin Boolean
+  createdAt  DateTime @default(now())
+}

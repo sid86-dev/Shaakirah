@@ -1,72 +1,58 @@
-import { supabase } from "@/utils/connect";
-import { use, useEffect, useState } from "react";
+import axios from "axios";
+import { deleteCookie, getCookie } from "cookies-next";
+import { NextPage, NextPageContext } from "next";
 import { useRouter } from "next/router";
-import { NextPage } from "next";
-import { useUser } from "@/context/userStore";
+import React from "react";
 
-interface Props {
-  session: any;
-}
+type session = {
+  email: string;
+  username: string;
+};
 
-const Home: NextPage<Props> = () => {
-  const { user, setUser } = useUser();
+type Props = {
+  session: session | null;
+};
+
+const Home: NextPage<Props> = ({ session }) => {
   const router = useRouter();
 
-  // get session data
-  const getUser = async () => {
-    const { data, error } = await supabase.auth.getUser();
-
-    // @ts-ignore
-    setUser(data.user);
-
-    console.log(data, error);
-
-    if (data.user === null) {
-      return;
-    } else {
-      // check for user data in database
-      const { data: userData } = await supabase
-        .from("users")
-        .select("*")
-        .eq("email", data?.user?.email)
-        .single();
-
-      if (!userData) {
-        router.push("/signup");
-      } else {
-        console.log(userData);
-        setUser(userData);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (!user) {
-      getUser();
-    }
-  }, [user]);
-
-  const signIn = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
+  // handle logout
+  const logout = async () => {
+    const id = getCookie("id");
+    await axios.post("/api/user/auth", {
+      id,
+      auth: false,
     });
-
-    console.log(data, error);
+    deleteCookie("id");
+    router.push("/");
   };
 
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    setUser(null);
-    console.log(error);
-  };
+  console.log(session);
+  return <div>{<button onClick={() => logout()}>Logout</button>}</div>;
+};
 
-  return (
-    <div>
-      <button className="btn btn-blue" onClick={user ? signOut : signIn}>
-        {user === undefined ? "..." : user === null ? "Sign In" : "Sign Out"}
-      </button>
-    </div>
-  );
+Home.getInitialProps = async (ctx: NextPageContext) => {
+  const { req, res } = ctx;
+  const id = getCookie("id", { req, res });
+
+  const { data } = await axios.post(`http://localhost:3000/api/user/find`, {
+    id,
+  });
+
+  const { email, username } = data.user;
+
+  if (email && username) {
+    return {
+      session: {
+        email,
+        username,
+      },
+    };
+  } else {
+    return {
+      session: null,
+    };
+  }
 };
 
 export default Home;

@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import Menu from "@/components/Menu";
 import { useState } from "react";
 import { Inconsolata } from "next/font/google";
-import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { UserProvider } from "@/context/userStore";
 
 // use Inconsolata font
@@ -17,19 +17,23 @@ export default function App({ Component, pageProps }: AppProps) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <UserProvider>
-      <main className={`bg-[#eee7de] h-screen ${inconsolata.className}`}>
-        <div
-          className={`flex flex-row  ${
-            !isOpen
-              ? "-translate-x-72 transition-transform duration-500"
-              : "translate-x-0 transition-transform duration-500"
-          }`}
-        >
-          <Menu isOpen={isOpen} setIsOpen={setIsOpen} />
-          <Component {...pageProps} />
-        </div>
-      </main>
-    </UserProvider>
+    <GoogleOAuthProvider
+      clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
+    >
+      <UserProvider>
+        <main className={`bg-[#eee7de] h-screen ${inconsolata.className}`}>
+          <div
+            className={`flex flex-row  ${
+              !isOpen
+                ? "-translate-x-72 transition-transform duration-500"
+                : "translate-x-0 transition-transform duration-500"
+            }`}
+          >
+            <Menu isOpen={isOpen} setIsOpen={setIsOpen} />
+            <Component {...pageProps} />
+          </div>
+        </main>
+      </UserProvider>
+    </GoogleOAuthProvider>
   );
 }

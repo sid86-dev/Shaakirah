@@ -1,32 +1,41 @@
-import { useUser } from "@/context/userStore";
-import { supabase } from "@/utils/connect";
-import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaRegFaceSmileBeam } from "react-icons/fa6";
+import { deleteCookie, getCookie } from "cookies-next";
+import axios from "axios";
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/router";
 
 const Signup = () => {
   const [name, setName] = useState<string>("");
-  const { user } = useUser();
+  const router = useRouter();
 
+  // handle create user
   const createUser = async () => {
+    let email = getCookie("unregisteredEmail");
+    let id = getCookie("id");
 
-    console.log(user)
+    const { data } = await axios.post(`api/user/create`, {
+      id,
+      email,
+      username: name,
+    });
 
-    if (user?.email === undefined) {
-      return;
+    await axios.post("/api/user/auth", {
+      id,
+      auth: true,
+    });
+
+    if (data.user) {
+      deleteCookie("unregisteredEmail");
+      router.push("/");
     }
+  };
 
-    const { data, error } = await supabase
-      .from("users")
-      .insert([{ user_id: uuidv4(), email: user?.email, username: name }]);
-
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    console.log(data);
+  // handle exit signup
+  const handleExitSignup = () => {
+    deleteCookie("unregisteredEmail");
+    router.push("/");
   };
 
   return (
@@ -80,9 +89,12 @@ const Signup = () => {
           </button>
           <span className="font-normal text-gray-600 text-md mt-4">
             or{" "}
-            <Link href="/login" className="underline">
+            <span
+              onClick={handleExitSignup}
+              className="underline cursor-pointer"
+            >
               cancel your sign up!
-            </Link>
+            </span>
           </span>
         </div>
       </div>
