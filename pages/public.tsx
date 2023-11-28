@@ -30,7 +30,7 @@ const Public: NextPage<Props> = () => {
       setCookie("id", id);
 
       try {
-        await axios.post("/api/user/auth", {
+        await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/auth`, {
           id,
           auth: true,
         });

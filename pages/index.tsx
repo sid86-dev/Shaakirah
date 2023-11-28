@@ -19,7 +19,7 @@ const Home: NextPage<Props> = ({ session }) => {
   // handle logout
   const logout = async () => {
     const id = getCookie("id");
-    await axios.post("/api/user/auth", {
+    await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/auth`, {
       id,
       auth: false,
     });
@@ -35,9 +35,12 @@ Home.getInitialProps = async (ctx: NextPageContext) => {
   const { req, res } = ctx;
   const id = getCookie("id", { req, res });
 
-  const { data } = await axios.post(`http://localhost:3000/api/user/find`, {
-    id,
-  });
+  const { data } = await axios.post(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/find`,
+    {
+      id,
+    }
+  );
 
   const { email, username } = data.user;
 

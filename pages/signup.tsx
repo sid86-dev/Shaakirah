@@ -15,13 +15,16 @@ const Signup = () => {
     let email = getCookie("unregisteredEmail");
     let id = getCookie("id");
 
-    const { data } = await axios.post(`api/user/create`, {
-      id,
-      email,
-      username: name,
-    });
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/create`,
+      {
+        id,
+        email,
+        username: name,
+      }
+    );
 
-    await axios.post("/api/user/auth", {
+    await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/auth`, {
       id,
       auth: true,
     });
