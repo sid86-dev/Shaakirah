@@ -25,8 +25,8 @@ export default function App({ Component, pageProps }: AppProps) {
           <div
             className={`flex flex-row  ${
               !isOpen
-                ? "-translate-x-72 transition-transform duration-500"
-                : "translate-x-0 transition-transform duration-500"
+                ? "-translate-x-56 transition-transform duration-500"
+                : "translate-x-12 transition-transform duration-500"
             }`}
           >
             <Menu isOpen={isOpen} setIsOpen={setIsOpen} />
