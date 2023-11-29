@@ -3,7 +3,6 @@ import { User } from "@/types";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { NextPage, NextPageContext } from "next";
-import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
 type Props = {
@@ -19,7 +18,13 @@ const Home: NextPage<Props> = ({ session }) => {
     }
   }, [session, user]);
 
-  return <div>{<button>Logout</button>}</div>;
+  console.log(user)
+
+  return (
+    <div className="flex items-center justify-center w-full">
+      <h1 className="text-3xl">This is authorized content</h1>
+    </div>
+  );
 };
 
 Home.getInitialProps = async (ctx: NextPageContext) => {

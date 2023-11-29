@@ -35,6 +35,7 @@ const Menu: FC<Props> = ({ setIsOpen, isOpen }) => {
 
       let id = userInfo.id;
       setCookie("id", id);
+      setUser(undefined);
 
       try {
         await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/auth`, {
