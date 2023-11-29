@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import Menu from "@/components/Menu";
+import Menu from "@/components/Menu/Index";
 import { useState } from "react";
 import { Inconsolata } from "next/font/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";

@@ -1,20 +1,24 @@
+import { useUser } from "@/context/userStore";
+import { User } from "@/types";
 import axios from "axios";
 import { deleteCookie, getCookie } from "cookies-next";
 import { NextPage, NextPageContext } from "next";
 import { useRouter } from "next/router";
-import React from "react";
-
-type session = {
-  email: string;
-  username: string;
-};
+import React, { useEffect } from "react";
 
 type Props = {
-  session: session | null;
+  session: User | null;
 };
 
 const Home: NextPage<Props> = ({ session }) => {
   const router = useRouter();
+  const { user, setUser } = useUser();
+
+  useEffect(() => {
+    if (session && !user) {
+      setUser(session);
+    }
+  }, [session, user]);
 
   // handle logout
   const logout = async () => {
@@ -23,6 +27,7 @@ const Home: NextPage<Props> = ({ session }) => {
       id,
       auth: false,
     });
+    setUser(null);
     deleteCookie("id");
     router.push("/");
   };
@@ -42,14 +47,9 @@ Home.getInitialProps = async (ctx: NextPageContext) => {
     }
   );
 
-  const { email, username } = data.user;
-
-  if (email && username) {
+  if (data.user) {
     return {
-      session: {
-        email,
-        username,
-      },
+      session: data.user,
     };
   } else {
     return {
