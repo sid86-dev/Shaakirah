@@ -6,7 +6,7 @@ import React, { FC, useEffect, useState } from "react";
 import { PiCaretRightBold, PiCaretLeftBold } from "react-icons/pi";
 import axios from "axios";
 import Public from "./Public";
-import User from "./User";
+import User from "./Authorized";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -65,8 +65,12 @@ const Menu: FC<Props> = ({ setIsOpen, isOpen }) => {
         )}
       </div>
 
-      <div className="my-8 p-3 w-full">
-        {user ? <User /> : <Public />}
+      <div className="my-12 px-8 w-full">
+        {user !== null && user !== undefined ? (
+          <User user={user} setUser={setUser} />
+        ) : (
+          <Public login={login} />
+        )}
       </div>
     </div>
   );
