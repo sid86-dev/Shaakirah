@@ -2,7 +2,7 @@ import { useUser } from "@/context/userStore";
 import { useGoogleLogin } from "@react-oauth/google";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { PiCaretRightBold, PiCaretLeftBold } from "react-icons/pi";
 import axios from "axios";
 import Public from "./Public";
