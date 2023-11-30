@@ -1,4 +1,4 @@
-import { createPost, getUserPosts } from "@/prisma/post";
+import { getUserPosts } from "@/prisma/post";
 import { NextApiRequest, NextApiResponse } from "next";
 import { v4 as uuidv4 } from "uuid";
 
@@ -9,17 +9,11 @@ export default async function handler(
   if (req.method === "GET") {
     const { authorId } = req.query;
 
-    // READALL
+    // READ USER POSTS
     const posts = await getUserPosts(authorId as string);
 
     res.status(200).json(posts);
-  } else if (req.method === "POST") {
-    const id = uuidv4();
-    const { journalId, content, authorId } = req.body;
-
-    // CREATE
-    const post = await createPost(id, journalId, content, authorId);
-
-    res.status(200).json(post);
+  } else {
+    res.status(405).json({ message: "Method not allowed" });
   }
 }

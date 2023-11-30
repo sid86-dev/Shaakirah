@@ -1,3 +1,4 @@
+import Layout from "@/components/Layout/Index";
 import { NextPage } from "next";
 
 interface Props {
@@ -6,9 +7,11 @@ interface Props {
 
 const Public: NextPage<Props> = () => {
   return (
-    <div className="flex items-center justify-center w-full">
-      <h1 className="text-3xl">This is public content</h1>
-    </div>
+    <Layout type="public">
+      <div className="flex w-full">
+        <h1>Public Page</h1>
+      </div>
+    </Layout>
   );
 };
 

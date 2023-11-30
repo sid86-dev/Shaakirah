@@ -1,7 +1,8 @@
+import Layout from "@/components/Layout/Index";
 import { useUser } from "@/context/userStore";
 import { User } from "@/types";
 import axios from "axios";
-import { getCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import { NextPage, NextPageContext } from "next";
 import React, { useEffect } from "react";
 
@@ -18,12 +19,12 @@ const Home: NextPage<Props> = ({ session }) => {
     }
   }, [session, user]);
 
-  console.log(user)
-
   return (
-    <div className="flex items-center justify-center w-full">
-      <h1 className="text-3xl">This is authorized content</h1>
-    </div>
+    <Layout type="private">
+      <div className="flex w-full">
+        <h1>Public Page</h1>
+      </div>
+    </Layout>
   );
 };
 
@@ -31,22 +32,25 @@ Home.getInitialProps = async (ctx: NextPageContext) => {
   const { req, res } = ctx;
   const id = getCookie("id", { req, res });
 
-  const { data } = await axios.post(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/find`,
-    {
-      id,
-    }
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/find?id=${id}`
   );
 
-  if (data.user) {
+  if (data && data.isloggedin === true) {
     return {
-      session: data.user,
+      session: data,
     };
   } else {
-    return {
-      session: null,
-    };
+    // redirect to public page
+    deleteCookie("id", { req, res });
+    if (res) {
+      res.writeHead(302, { Location: "/public" });
+      res.end();
+    }
   }
+  return {
+    session: null,
+  };
 };
 
 export default Home;
