@@ -14,14 +14,14 @@ export const getPost = async (id: string) => {
 // CREATE
 export const createPost = async (
   id: string,
-  journal: string,
+  journalId: string,
   content: string,
   authorId: string
 ) => {
   const post = await prisma.post.create({
     data: {
       id,
-      journal,
+      journalId,
       content,
       authorId,
     },
@@ -32,5 +32,15 @@ export const createPost = async (
 // READALL
 export const getAllPosts = async () => {
   const posts = await prisma.post.findMany();
+  return posts;
+};
+
+// USER'S POSTS
+export const getUserPosts = async (authorId: string) => {
+  const posts = await prisma.post.findMany({
+    where: {
+      authorId,
+    },
+  });
   return posts;
 };
