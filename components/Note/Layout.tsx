@@ -5,7 +5,7 @@ import { GoPlus } from "react-icons/go";
 import EmojiPicker from "emoji-picker-react";
 import { Menu, MenuButton, MenuInstance } from "@szhsin/react-menu";
 import { IoMdHappy } from "react-icons/io";
-import { Journal } from "@prisma/client";
+import { Journal, Post } from "@prisma/client";
 import JournalSelector from "./JournalSelector";
 import axios from "axios";
 import { useUser } from "@/context/userStore";
@@ -13,9 +13,10 @@ import { useUser } from "@/context/userStore";
 interface Props {
   journals: Journal[];
   type: "public" | "private";
+  setPost: React.Dispatch<React.SetStateAction<Post[] | null>>;
 }
 
-const Note: FC<Props> = ({ journals, type }) => {
+const Note: FC<Props> = ({ journals, type, setPost }) => {
   const [text, setText] = React.useState<string>("");
   const [selectedJournal, setSelectedJournal] = React.useState<Journal | null>(
     null
@@ -50,10 +51,16 @@ const Note: FC<Props> = ({ journals, type }) => {
 
     console.log(payload);
 
-    await axios.post(
+    const post = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/post/create`,
       payload
     );
+
+    // concat post to posts
+    setPost((posts) => {
+      if (posts === null) return [post.data];
+      return [post.data, ...posts];
+    });
 
     setText("");
     setSelectedJournal(null);

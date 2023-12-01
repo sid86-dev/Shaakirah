@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout/Index";
+import Layout from "@/components/App/Layout";
 import { NextPage } from "next";
 
 interface Props {

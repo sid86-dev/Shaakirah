@@ -52,7 +52,7 @@ const Menu: FC<Props> = ({ setIsOpen, isOpen }) => {
 
   return (
     <div
-      className={`flex relative pr-10 border w-1/4 border-black h-screen border-r border-y-0 border-l-0 `}
+      className={`flex relative top-0 pr-10 border w-1/4 border-black h-screen border-r border-y-0 border-l-0 `}
     >
       {/* Toolge Button */}
       <div
