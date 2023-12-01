@@ -21,13 +21,15 @@ model User {
 }
 
 model Post {
-  id        String   @id @map("_id")
-  journalId String
-  content   String
-  createdAt DateTime @default(now())
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
-  type      String   @default("public")
+  id          String   @id @map("_id")
+  journalId   String
+  content     String
+  createdAt   DateTime @default(now())
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    String
+  type        String   @default("public")
+  authorName  String
+  journalName String
 }
 
 model Journal {

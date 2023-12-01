@@ -14,7 +14,7 @@ const JournalSelector: FC<Props> = ({
   handleCloseMenu,
 }) => {
   return (
-    <div className="flex flex-col translate-x-44 -translate-y-6 border border-black w-52">
+    <div className="flex bg-[#eee7de] flex-col translate-x-44 -translate-y-6 border border-black w-52">
       <input
         className="text-sm px-2 text-[#766967] my-2 placeholder:text-[#766967] bg-transparent"
         placeholder="Find or create a journal..."

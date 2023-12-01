@@ -17,7 +17,9 @@ export const createPost = async (
   journalId: string,
   content: string,
   authorId: string,
-  type: string
+  type: string,
+  authorName: string,
+  journalName: string
 ) => {
   const post = await prisma.post.create({
     data: {
@@ -26,6 +28,8 @@ export const createPost = async (
       content,
       authorId,
       type,
+      authorName,
+      journalName,
     },
   });
   return post;
@@ -33,11 +37,15 @@ export const createPost = async (
 
 // READALL
 export const getAllPosts = async () => {
-  const posts = await prisma.post.findMany();
+  const posts = await prisma.post.findMany({
+    where: {
+      type: "public",
+    },
+  });
   return posts;
 };
 
-// USER'S POSTS
+// READ USER'S POSTS
 export const getUserPosts = async (authorId: string) => {
   const posts = await prisma.post.findMany({
     where: {
@@ -47,7 +55,7 @@ export const getUserPosts = async (authorId: string) => {
   return posts;
 };
 
-// JOURNAL'S POSTS
+// READ JOURNAL'S POSTS
 export const getJournalPosts = async (journalId: string) => {
   const posts = await prisma.post.findMany({
     where: {
@@ -55,4 +63,15 @@ export const getJournalPosts = async (journalId: string) => {
     },
   });
   return posts;
+};
+
+// UPDATE POST FIELD
+export const updatePost = async (id: string, data: any) => {
+  const post = await prisma.post.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return post;
 };

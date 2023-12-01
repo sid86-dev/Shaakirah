@@ -8,12 +8,21 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     const id = uuidv4();
-    const { journalId, content, authorId, type } = req.body;
+    const { journalId, content, authorId, type, authorName, journalName } =
+      req.body;
 
-    console.log(req.body)
+    console.log(req.body);
 
     // CREATE
-    const post = await createPost(id, journalId, content, authorId, type);
+    const post = await createPost(
+      id,
+      journalId,
+      content,
+      authorId,
+      type,
+      authorName,
+      journalName
+    );
 
     res.status(200).json(post);
   } else {

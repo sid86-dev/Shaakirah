@@ -12,11 +12,10 @@ import { useUser } from "@/context/userStore";
 
 interface Props {
   journals: Journal[];
-  type: "public" | "private";
   setPost: React.Dispatch<React.SetStateAction<Post[] | null>>;
 }
 
-const Note: FC<Props> = ({ journals, type, setPost }) => {
+const Note: FC<Props> = ({ journals, setPost }) => {
   const [text, setText] = React.useState<string>("");
   const [selectedJournal, setSelectedJournal] = React.useState<Journal | null>(
     null
@@ -46,10 +45,10 @@ const Note: FC<Props> = ({ journals, type, setPost }) => {
       journalId: selectedJournal.id,
       content: text,
       authorId: user?.id,
-      type: type,
+      type: selectedJournal.type,
+      authorName: user?.username || "guest",
+      journalName: selectedJournal.title,
     };
-
-    console.log(payload);
 
     const post = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/post/create`,

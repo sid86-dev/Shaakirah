@@ -26,24 +26,6 @@ const Home: NextPage<Props> = ({ session }) => {
     setPosts(data);
   };
 
-  // handle get all journals from db
-  const handleGetAllJournals = async () => {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/journal`
-    );
-
-    setPublicJournals(data);
-  };
-
-  // handle get user journals from db
-  const handleUserAllJournals = async () => {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/journal/user?authorId=${user?.id}`
-    );
-
-    setJournals(data);
-  };
-
   // control user session
   useEffect(() => {
     if (session && user === undefined) {
@@ -58,28 +40,19 @@ const Home: NextPage<Props> = ({ session }) => {
     }
   }, [user, posts]);
 
-  // control user journal query
-  useEffect(() => {
-    if (journals.length === 0) {
-      handleUserAllJournals();
-    }
-  }, [journals]);
-
-  // control public journal query
-  useEffect(() => {
-    if (publicJournals.length === 0) {
-      handleGetAllJournals();
-    }
-  }, [publicJournals]);
+  console.log(posts);
 
   return (
     <Layout
       setPost={setPosts}
+      journals={journals}
+      publicJournals={publicJournals}
+      setJournals={setJournals}
+      setPublicJournals={setPublicJournals}
       type="private"
-      journals={user ? [...journals, ...publicJournals] : publicJournals}
     >
       <Posts
-        user={user || null}
+        setPost={setPosts}
         journals={user ? [...journals, ...publicJournals] : publicJournals}
         posts={posts}
       />
