@@ -2,7 +2,7 @@ import { useUser } from "@/context/userStore";
 import { useGoogleLogin } from "@react-oauth/google";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { PiCaretRightBold, PiCaretLeftBold } from "react-icons/pi";
 import axios from "axios";
 import Public from "./Public";
@@ -52,7 +52,7 @@ const Menu: FC<Props> = ({ setIsOpen, isOpen }) => {
 
   return (
     <div
-      className={`flex relative border w-1/4 border-black h-screen border-r border-y-0 border-l-0 `}
+      className={`flex relative top-0 pr-10 border w-1/4 border-black h-screen border-r border-y-0 border-l-0 `}
     >
       {/* Toolge Button */}
       <div
@@ -66,7 +66,7 @@ const Menu: FC<Props> = ({ setIsOpen, isOpen }) => {
         )}
       </div>
 
-      <div className="my-12 px-8 w-full">
+      <div className="my-12 w-full">
         {user !== null && user !== undefined ? (
           <User user={user} setUser={setUser} />
         ) : (

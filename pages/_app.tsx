@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import Menu from "@/components/Menu/Index";
+import Menu from "@/components/Menu/Layout";
 import { useState } from "react";
 import { Inconsolata } from "next/font/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -25,8 +25,8 @@ export default function App({ Component, pageProps }: AppProps) {
           <div
             className={`flex flex-row  ${
               !isOpen
-                ? "-translate-x-72 transition-transform duration-500"
-                : "translate-x-0 transition-transform duration-500"
+                ? "-translate-x-56 transition-transform duration-500"
+                : "translate-x-12 transition-transform duration-500"
             }`}
           >
             <Menu isOpen={isOpen} setIsOpen={setIsOpen} />

@@ -1,5 +1,4 @@
 import prisma from "./prisma";
-import { v4 as uuidv4 } from "uuid";
 
 // READ
 export const getUser = async (id: string) => {
